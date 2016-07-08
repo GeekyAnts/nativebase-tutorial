@@ -15,14 +15,18 @@
             radio1 : true,
             check1: false,
             modalVisible: false,
-            search: 'a',
+            search: 'nativebase',
+            selectedItem: {},
             results: {
                 items: []
             }
         }
     }
-    setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+    setModalVisible(visible, x) {
+        this.setState({
+            modalVisible: visible,
+            selectedItem: x
+        });
      }
     toggleCheck() {
         this.setState({
@@ -47,8 +51,6 @@
             .then((response) => response.json())
             .then((responseJson) => {
 
-                console.log('!@#@!#@#', responseJson);
-
                 that.setState({
                     results: responseJson,
                     loading: false
@@ -68,7 +70,6 @@
     render() {
 
         var that = this;
-
         return (
             <Container>
                 <Header searchBar rounded>
@@ -79,14 +80,13 @@
                     <Button transparent onPress={()=>this.search()}>Go</Button>
                 </Header>
                 <Content>
-                    {this.state.loading? <Spinner /> : <List dataArray={this.state.results.items} renderRow={(item) => 
-
-                                 <ListItem button onPress={()=>this.setModalVisible(true)} >
+                    {this.state.loading? <Spinner /> : <List dataArray={this.state.results.items} renderRow={(item) =>
+                                <ListItem button onPress={()=>this.setModalVisible(true, item)} >
                                     <Thumbnail square size={80} source={{uri: item.owner.avatar_url}} />
-                                    <Text>{item.name}</Text>
-                                    <Text>{item.full_name}</Text>
-                                    <Text note style={{marginTop: 5}}>{item.score}
-                                    </Text>
+                                    <Text>Name: <Text style={{fontWeight: '600', color: '#46ee4b'}}>{item.name}</Text></Text>
+
+                                    <Text style={{color:'#007594'}}>{item.full_name}</Text>
+                                    <Text note>Score: <Text note style={{marginTop: 5}}>{item.score}</Text></Text>
                                 </ListItem>
                             } />}
                     <Modal
@@ -95,22 +95,35 @@
                         visible={this.state.modalVisible}
                         onRequestClose={() => {alert("Modal has been closed.")}}
                         >
-                        <Card style={{paddingTop: 50}}>
-                            <CardItem cardBody style={{justifyContent: 'flex-start'}}>
-                                <Image style={styles.modalImage} source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}  />
-                                <H3 style={styles.header}> Movie name
+                        <Card style={{paddingTop: 20}}>
+                            {Object.getOwnPropertyNames(this.state.selectedItem).length===0 ? <View />
+                            :  <CardItem cardBody style={{justifyContent: 'flex-start'}}>
+                                <Image style={styles.modalImage} source={{uri: this.state.selectedItem.owner.avatar_url}}  />
+                                <H3 style={styles.header}> {this.state.selectedItem.name}
                                 </H3>
-                                <Text style={{marginBottom: 10}}>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad.
+                                <Text style={styles.negativeMargin} >
+                                    Type: <Text style={styles.bold}>{this.state.selectedItem.owner.type}</Text>
+                                </Text>
+                                <Text style={styles.negativeMargin} >
+                                    Stars: <Text style={styles.bold}>{this.state.selectedItem.stargazers_count}</Text>
+                                </Text>
+                                <Text style={styles.negativeMargin} >
+                                    Language: <Text style={styles.bold}>{this.state.selectedItem.language}</Text>
+                                </Text>
+                                <Text style={styles.negativeMargin} >
+                                    Open Issues: <Text style={styles.bold}>{this.state.selectedItem.open_issues_count}</Text>
+                                </Text>
+                                <Text>
+                                    Last Update: <Text style={styles.bold}>{this.state.selectedItem.updated_at.slice(0,10)}</Text>
                                 </Text>
                                 <Button danger style={{alignSelf: 'flex-end'}} onPress={() => {
-                                        this.setModalVisible(!this.state.modalVisible)
+                                        this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
                                     }}>
                                     Go Back
                                 </Button>
                             </CardItem>
+                            }
                         </Card>
-
                     </Modal>
             </Content>
             </Container>
@@ -122,11 +135,18 @@ const styles = StyleSheet.create({
         marginLeft: -5,
         marginTop: 5,
         marginBottom: (Platform.OS==='ios') ? -7 : 0,
-        lineHeight: 24
+        lineHeight: 24,
+        color: '#5357b6'
     },
     modalImage: {
-        resizeMode: 'cover',
+        resizeMode: 'contain',
         height: 200
+    },
+    bold: {
+        fontWeight: '600'
+    },
+    negativeMargin: {
+        marginBottom: -10
     }
 });
 
