@@ -6,7 +6,7 @@
 
  import React, { Component } from 'react';
  import { AppRegistry, StyleSheet, Modal, Image, Platform } from 'react-native';
- import { Text, View, Content, Container, Header, Title, Button, Icon, InputGroup, Input, ListItem, List, Radio, CheckBox, Thumbnail, Card, CardItem, H3 } from 'native-base';
+ import { Spinner, Text, View, Content, Container, Header, Title, Button, Icon, InputGroup, Input, ListItem, List, Radio, CheckBox, Thumbnail, Card, CardItem, H3 } from 'native-base';
 
  class nativebaseTutorial extends Component {
     constructor(props) {
@@ -74,12 +74,12 @@
                 <Header searchBar rounded>
                     <InputGroup>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search" value={this.state.search}  onChangeText={(text) => this.setState({search:text})}/>
+                        <Input placeholder="Search" value={this.state.search}  onChangeText={(text) => this.setState({search:text})} onSubmitEditing={()=>this.search()}/>
                     </InputGroup>
                     <Button transparent onPress={()=>this.search()}>Go</Button>
                 </Header>
                 <Content>
-                    {this.state.loading? <Text>Loading</Text> : <List dataArray={this.state.results.items} renderRow={(item) => 
+                    {this.state.loading? <Spinner /> : <List dataArray={this.state.results.items} renderRow={(item) => 
 
                                  <ListItem button onPress={()=>this.setModalVisible(true)} >
                                     <Thumbnail square size={80} source={{uri: item.owner.avatar_url}} />
