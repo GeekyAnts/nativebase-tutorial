@@ -15,7 +15,7 @@
             radio1 : true,
             check1: false,
             modalVisible: false,
-            search: 'test',
+            search: 'a',
             results: {
                 items: []
             }
@@ -79,18 +79,16 @@
                     <Button transparent onPress={()=>this.search()}>Go</Button>
                 </Header>
                 <Content>
-                    {this.state.loading? <Text>Loading</Text> : <List>
-                            {that.state.results.items.map((item) => {
+                    {this.state.loading? <Text>Loading</Text> : <List dataArray={this.state.results.items} renderRow={(item) => 
 
-                                return <ListItem button onPress={()=>this.setModalVisible(true)} >
+                                 <ListItem button onPress={()=>this.setModalVisible(true)} >
                                     <Thumbnail square size={80} source={{uri: item.owner.avatar_url}} />
                                     <Text>{item.name}</Text>
                                     <Text>{item.full_name}</Text>
                                     <Text note style={{marginTop: 5}}>{item.score}
                                     </Text>
                                 </ListItem>
-                            })}
-                        </List>}
+                            } />}
                     <Modal
                         animationType="slide"
                         transparent={false}

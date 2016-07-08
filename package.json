@@ -6,7 +6,7 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "native-base": "https://github.com/GeekyAnts/NativeBase",
+    "native-base": "https://github.com/GeekyAnts/NativeBase#feat/tutorial_app",
     "react": "15.2.0",
     "react-native": "^0.29.0",
     "react-native-vector-icons": "^2.0.3"
