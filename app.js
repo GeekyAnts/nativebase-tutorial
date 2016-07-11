@@ -16,18 +16,20 @@
             check1: false,
             modalVisible: false,
             search: 'nativebase',
-            selectedItem: {},
+            selectedItem: undefined,
             results: {
                 items: []
             }
         }
     }
+
     setModalVisible(visible, x) {
         this.setState({
             modalVisible: visible,
             selectedItem: x
         });
-     }
+    }
+
     toggleCheck() {
         this.setState({
             check1 : !this.state.check1
@@ -67,6 +69,7 @@
                 console.error(error);
         });
     }
+
     render() {
 
         var that = this;
@@ -96,7 +99,7 @@
                         onRequestClose={() => {alert("Modal has been closed.")}}
                         >
                         <Card style={{paddingTop: 20}}>
-                            {Object.getOwnPropertyNames(this.state.selectedItem).length===0 ? <View />
+                            {!this.state.selectedItem ? <View />
                             :  <CardItem cardBody style={{justifyContent: 'flex-start'}}>
                                 <Image style={styles.modalImage} source={{uri: this.state.selectedItem.owner.avatar_url}}  />
                                 <H3 style={styles.header}> {this.state.selectedItem.name}
